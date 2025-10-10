@@ -63,4 +63,9 @@ _Always lowercase wallet addresses before storage/comparison._
 - **导入顺序 / Imports**: 外部 → 内部 → 相对 → 样式
 - **注释 / Comments**: 解释"为什么"而非"是什么"，公共 API 使用 JSDoc
 
+## Solidity standards
+
+- **String** 使用string类型的时候，使用双引号而不是单引号
+- **pragma** 使用 ^0.8.24
+
 ---
