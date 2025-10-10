@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {Test} from 'forge-std/Test.sol';
-import {HealthCheck} from '../src/HealthCheck.sol';
+import {Test} from "forge-std/Test.sol";
+import {HealthCheck} from "../src/HealthCheck.sol";
 
 contract HealthCheckTest is Test {
   HealthCheck public healthCheck;
@@ -13,7 +13,7 @@ contract HealthCheckTest is Test {
 
   function test_GetMessage() public view {
     string memory message = healthCheck.getMessage();
-    assertEq(message, 'Trustless SocialFi');
+    assertEq(message, "Trustless SocialFi");
   }
 
   function test_IsAlive() public view {

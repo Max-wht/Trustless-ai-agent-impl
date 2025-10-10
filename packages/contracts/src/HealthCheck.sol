@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 /// @notice A simple contract to verify the Foundry development environment is working
 /// @dev This is a "Hello World" contract for the Trustless SocialFi project
 contract HealthCheck {
-  string private constant MESSAGE = 'Trustless SocialFi';
+  string private constant MESSAGE = "Trustless SocialFi";
 
   /// @notice Returns the project name
   /// @return The project name string
