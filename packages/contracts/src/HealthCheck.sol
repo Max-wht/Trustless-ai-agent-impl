@@ -6,7 +6,6 @@ pragma solidity ^0.8.24;
 /// @dev This is a "Hello World" contract for the Trustless SocialFi project
 contract HealthCheck {
   string private constant MESSAGE = "Trustless SocialFi";
-
   /// @notice Returns the project name
   /// @return The project name string
   function getMessage() public pure returns (string memory) {

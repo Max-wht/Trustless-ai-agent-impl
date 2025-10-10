@@ -11,12 +11,12 @@ contract HealthCheckTest is Test {
     healthCheck = new HealthCheck();
   }
 
-  function test_GetMessage() public view {
+  function testGetMessage() public view {
     string memory message = healthCheck.getMessage();
     assertEq(message, "Trustless SocialFi");
   }
 
-  function test_IsAlive() public view {
+  function testIsAlive() public view {
     bool alive = healthCheck.isAlive();
     assertTrue(alive);
   }

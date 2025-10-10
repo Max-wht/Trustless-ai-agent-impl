@@ -6,6 +6,18 @@
   "tabWidth": 2,
   "useTabs": false,
   "arrowParens": "always",
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "plugins": ["prettier-plugin-solidity"],
+  "overrides": [
+    {
+      "files": "*.sol",
+      "options": {
+        "parser": "solidity-parse",
+        "singleQuote": false,
+        "printWidth": 120,
+        "tabWidth": 2,
+        "useTabs": false
+      }
+    }
+  ]
 }
-
