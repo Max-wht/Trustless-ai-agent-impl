@@ -1,0 +1,15 @@
+{
+  "name": "@trustless/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Foundry smart contracts for Trustless SocialFi",
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "lint": "solhint 'src/**/*.sol'",
+    "clean": "forge clean"
+  },
+  "devDependencies": {
+    "solhint": "^4.1.1"
+  }
+}
