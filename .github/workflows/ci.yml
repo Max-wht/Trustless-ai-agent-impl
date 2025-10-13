@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive # Pull Git submodules (forge-std, openzeppelin)
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -48,6 +50,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive # Pull Git submodules
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -59,6 +63,11 @@ jobs:
         with:
           node-version: '20'
           cache: 'pnpm'
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -71,6 +80,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
+      - name: Generate Prisma Client
+        working-directory: packages/agent-service
+        run: npx prisma generate
+
+      - name: Build shared package first
+        working-directory: packages/shared
+        run: pnpm build
+
       - name: Build packages
         run: pnpm build
         env:
@@ -82,7 +99,8 @@ jobs:
         with:
           name: build-output
           path: |
-            packages/*/dist
+            packages/shared/dist
+            packages/agent-service/dist
             packages/web-app/.next
           retention-days: 7
 
@@ -95,6 +113,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -110,11 +130,25 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run type check
-        run: |
-          cd packages/agent-service && npx tsc --noEmit
-          cd ../web-app && npx tsc --noEmit
-          cd ../shared && npx tsc --noEmit
+      - name: Build shared package first
+        working-directory: packages/shared
+        run: pnpm build
+
+      - name: Generate Prisma Client
+        working-directory: packages/agent-service
+        run: npx prisma generate
+
+      - name: Type check shared
+        working-directory: packages/shared
+        run: npx tsc --noEmit
+
+      - name: Type check agent-service
+        working-directory: packages/agent-service
+        run: npx tsc --noEmit
+
+      - name: Type check web-app
+        working-directory: packages/web-app
+        run: npx tsc --noEmit
 
   # Summary job - required for branch protection
   ci-success:
@@ -133,4 +167,3 @@ jobs:
             exit 1
           fi
           echo "All CI jobs passed successfully!"
-
