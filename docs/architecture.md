@@ -206,9 +206,9 @@ _User-generated content with IPFS storage and moderation status._
 
 ```typescript
 enum ContentStatus {
-  Pending = "Pending", // 审核中 / Under review
-  Approved = "Approved", // 已批准 / Approved
-  Rejected = "Rejected", // 已拒绝 / Rejected
+  Pending = 'Pending', // 审核中 / Under review
+  Approved = 'Approved', // 已批准 / Approved
+  Rejected = 'Rejected', // 已拒绝 / Rejected
 }
 
 interface Post {
@@ -743,12 +743,12 @@ it("renders post card with correct data", () => {
 **后端 API 测试 / Backend API Test:**
 
 ```typescript
-it("creates post with valid auth", async () => {
+it('creates post with valid auth', async () => {
   const response = await app.inject({
-    method: "POST",
-    url: "/v1/posts",
+    method: 'POST',
+    url: '/v1/posts',
     headers: { authorization: `Bearer ${token}` },
-    payload: { content: "Test post" },
+    payload: { content: 'Test post' },
   });
   expect(response.statusCode).toBe(201);
 });
@@ -758,9 +758,9 @@ it("creates post with valid auth", async () => {
 
 ```solidity
 function testWeightedConsensus() public {
-    // 设置5个不同信誉的Agent / Setup 5 agents with different reputations
-    // 提交混合判断(3批准,2拒绝) / Submit mixed judgments (3 approve, 2 reject)
-    // 验证加权得分计算 / Verify weighted score calculation
+  // 设置5个不同信誉的Agent / Setup 5 agents with different reputations
+  // 提交混合判断(3批准,2拒绝) / Submit mixed judgments (3 approve, 2 reject)
+  // 验证加权得分计算 / Verify weighted score calculation
 }
 ```
 
@@ -1149,12 +1149,12 @@ function getAllAgents() external view returns (address[]);
 
 ```solidity
 struct Agent {
-    address agentAddress;       // Agent运营者地址
-    string serviceEndpoint;     // HTTP API端点 (e.g., https://agent.com/moderate)
-    uint256 stakedAmount;       // 质押金额（Wei）
-    uint256 reputationScore;    // 信誉评分 (0-100)
-    uint256 registeredAt;       // 注册时间戳
-    bool isActive;              // 是否活跃（未被罚没）
+  address agentAddress; // Agent运营者地址
+  string serviceEndpoint; // HTTP API端点 (e.g., https://agent.com/moderate)
+  uint256 stakedAmount; // 质押金额（Wei）
+  uint256 reputationScore; // 信誉评分 (0-100)
+  uint256 registeredAt; // 注册时间戳
+  bool isActive; // 是否活跃（未被罚没）
 }
 ```
 
@@ -1229,8 +1229,9 @@ function executeConsensus(uint256 contentId) internal;
 // 总权重: 90+80+70+60+50 = 350
 // 最终得分: 21270/350 = 60.8% > 60% → Approved ✅
 
-function getModerationResult(uint256 contentId) external view
-    returns (bool approved, uint256 score, AgentJudgment[5] memory judgments);
+function getModerationResult(
+  uint256 contentId
+) external view returns (bool approved, uint256 score, AgentJudgment[5] memory judgments);
 ```
 
 **共识阈值 / Consensus Threshold**: 60% (可通过 DAO 调整)
@@ -1296,9 +1297,9 @@ function getFollowers(address user) external view returns (address[]);
 
 ```solidity
 function createProposal(
-    string memory title,
-    string memory description,
-    string[] memory newRules
+  string memory title,
+  string memory description,
+  string[] memory newRules
 ) external returns (uint256 proposalId);
 // 要求: 提案者持有 ≥1000 $TRUST
 // 创建提案，投票期7天（常规）或48小时（紧急）

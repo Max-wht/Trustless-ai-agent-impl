@@ -1,0 +1,99 @@
+name: Smart Contract Tests
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/contracts/**'
+      - '.github/workflows/contract-test.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'packages/contracts/**'
+
+jobs:
+  foundry-tests:
+    name: Foundry Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Show Foundry version
+        run: |
+          forge --version
+          cast --version
+          anvil --version
+
+      - name: Run Forge build
+        working-directory: packages/contracts
+        run: forge build --sizes
+
+      - name: Run Forge tests
+        working-directory: packages/contracts
+        run: forge test -vvv
+
+      - name: Generate gas report
+        working-directory: packages/contracts
+        run: forge test --gas-report
+
+      - name: Run Forge coverage
+        working-directory: packages/contracts
+        run: |
+          forge coverage --report lcov
+          echo "Coverage report generated"
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: packages/contracts/lcov.info
+          flags: contracts
+          name: contract-coverage
+        continue-on-error: true
+
+  # Security checks
+  slither-analysis:
+    name: Slither Security Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Slither
+        run: pip3 install slither-analyzer
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Run Slither
+        working-directory: packages/contracts
+        run: |
+          slither . --fail-none --json slither-report.json || true
+          echo "Slither analysis completed"
+        continue-on-error: true
+
+      - name: Upload Slither report
+        uses: actions/upload-artifact@v4
+        with:
+          name: slither-report
+          path: packages/contracts/slither-report.json
+        if: always()
+

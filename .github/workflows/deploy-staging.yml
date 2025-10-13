@@ -1,0 +1,89 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches: [develop]
+
+# Only allow one deployment at a time
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy-frontend:
+    name: Deploy Frontend to Vercel
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: staging
+      url: ${{ steps.deploy.outputs.preview-url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared package
+        run: pnpm --filter @trustless/shared build
+
+      - name: Deploy to Vercel
+        id: deploy
+        run: |
+          # Install Vercel CLI
+          npm install --global vercel@latest
+          
+          # Deploy to Vercel (preview deployment)
+          cd packages/web-app
+          vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --token=${{ secrets.VERCEL_TOKEN }}
+          PREVIEW_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          echo "preview-url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+          echo "Deployed to: $PREVIEW_URL"
+
+      - name: Comment PR with preview link
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚀 Frontend deployed to Vercel!\n\n**Preview URL:** ${{ steps.deploy.outputs.preview-url }}`
+            })
+
+  # Placeholder for backend deployment
+  deploy-backend:
+    name: Deploy Backend (Placeholder)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Placeholder step
+        run: |
+          echo "Backend deployment will be configured in future stories"
+          echo "Will deploy to AWS ECS or similar container platform"
+          echo "Skipping for now..."
+
+      - name: Summary
+        run: |
+          echo "✅ Backend deployment placeholder completed"
+          echo "📝 Note: Actual deployment will be implemented when backend is production-ready"
+

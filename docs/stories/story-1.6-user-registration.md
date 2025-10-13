@@ -20,7 +20,6 @@
 ### 智能合约 / Smart Contract
 
 1. ✅ 创建智能合约 `src/UserRegistry.sol`：
-
    - 函数 `registerUser()`
    - 函数 `isRegistered(address)`
    - 函数 `getUserProfile(address)`
@@ -33,7 +32,6 @@
 ### 后端 / Backend
 
 4. ✅ 后端创建 Prisma schema：User 表
-
    - id (UUID)
    - walletAddress (unique)
    - username
@@ -51,7 +49,6 @@
 ### 前端 / Frontend
 
 6. ✅ 前端创建 Hook `useUserRegistration()`：
-
    - 检查当前钱包是否已注册
    - 未注册则自动调用后端 `/users/register`
    - 使用 wagmi `useSignMessage` 生成签名
@@ -76,11 +73,11 @@
 
 ```typescript
 // 后端验证签名
-import { verifyMessage } from "viem";
+import { verifyMessage } from 'viem';
 
 const valid = await verifyMessage({
   address: walletAddress,
-  message: "Sign in to Trustless SocialFi",
+  message: 'Sign in to Trustless SocialFi',
   signature,
 });
 ```
@@ -95,4 +92,6 @@ const valid = await verifyMessage({
 
 ---
 
-**Story Status**: ✅ Ready for Development
+**Story Status**: ✅ Completed & Verified
+
+**验证报告**: [查看详细验证报告](./story-1.6-verification-report.md)

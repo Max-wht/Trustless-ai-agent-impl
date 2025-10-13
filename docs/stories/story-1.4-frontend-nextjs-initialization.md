@@ -18,13 +18,11 @@
 ## Acceptance Criteria
 
 1. ✅ 在 `packages/web-app/` 运行 `npx create-next-app@latest`，选择：
-
    - TypeScript ✅
    - Tailwind CSS ✅
    - App Router ✅
 
 2. ✅ 配置 `tailwind.config.ts`：
-
    - 使用 shadcn/ui 推荐的配置
    - 添加自定义主题色（primary: blue-600、accent: emerald-500）
 
@@ -33,14 +31,12 @@
 4. ✅ 添加第一个 shadcn 组件：`npx shadcn-ui@latest add button card`
 
 5. ✅ 创建欢迎页面 `app/page.tsx`：
-
    - 显示 "Welcome to Trustless SocialFi" 标题
    - 项目 slogan: "Speak Freely, Trust Collectively"
    - 使用 shadcn Button 和 Card 组件
    - 响应式设计
 
 6. ✅ 配置字体（next/font）：
-
    - Inter（标题和正文）
    - JetBrains Mono（代码/哈希）
 
@@ -53,7 +49,6 @@
 10. ✅ 测试响应式：在移动端（375px）和桌面端（1920px）显示正常
 
 11. ✅ 配置 `next.config.js`：
-
     - 启用 TypeScript strict mode
     - 图片域名白名单（IPFS 网关）
 

@@ -77,15 +77,84 @@ foundryup
 forge --version
 ```
 
-## 6. 启动开发环境
+## 6. 配置环境变量
+
+### 后端服务 (agent-service)
+
+创建 `packages/agent-service/.env` 文件：
 
 ```bash
-# 启动所有服务
-pnpm dev
-
-# Web 应用将在 http://localhost:3000 运行
-# API 服务将在 http://localhost:3001 运行
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/trustless_socialfi"
+ETH_RPC_URL="http://localhost:8545"
 ```
+
+### 前端应用 (web-app)
+
+创建 `packages/web-app/.env.local` 文件：
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_ALCHEMY_API_KEY=your_alchemy_api_key_here
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_wallet_connect_project_id_here
+```
+
+## 7. 启动开发环境
+
+### 方法 1: 一键启动（推荐）
+
+使用提供的启动脚本：
+
+```bash
+./start-dev.sh
+```
+
+此脚本将自动：
+
+1. 启动 Anvil 本地以太坊节点（端口 8545）
+2. 部署智能合约
+3. 启动后端 API 服务（端口 3001）
+4. 启动前端应用（端口 3000）
+
+停止所有服务：
+
+```bash
+./stop-dev.sh
+```
+
+### 方法 2: 手动启动（用于调试）
+
+需要在 **3 个不同的终端** 中运行：
+
+#### 终端 1: 启动 Anvil 节点
+
+```bash
+cd packages/contracts
+anvil
+```
+
+#### 终端 2: 部署合约并启动后端
+
+```bash
+# 部署合约（仅首次或重启 Anvil 后需要）
+cd packages/contracts
+forge script script/DeployUserRegistry.s.sol:DeployUserRegistry --rpc-url http://localhost:8545 --broadcast
+
+# 返回根目录并启动后端
+cd ../..
+pnpm --filter @trustless/agent-service dev
+```
+
+#### 终端 3: 启动前端
+
+```bash
+pnpm --filter @trustless/web-app dev
+```
+
+### 访问应用
+
+- **前端应用**: http://localhost:3000
+- **后端 API**: http://localhost:3001
+- **Anvil RPC**: http://localhost:8545
 
 ## 故障排查 / Troubleshooting
 
@@ -106,6 +175,55 @@ pnpm dev
 - 检查 TypeScript 版本
 - 清理构建产物：`pnpm clean`
 - 重新构建：`pnpm build`
+
+### 后端服务报 500 错误："HTTP request failed" 或 "fetch failed"
+
+**问题**: 后端尝试连接 `http://localhost:8545` 失败
+
+**原因**: Anvil 本地节点未启动
+
+**解决方案**:
+
+1. 停止当前后端服务
+2. 使用 `./start-dev.sh` 启动完整环境
+3. 或手动启动 Anvil: `cd packages/contracts && anvil`
+
+### 端口已被占用
+
+**问题**: `Error: listen EADDRINUSE: address already in use`
+
+**解决方案**:
+
+```bash
+# 查找并停止占用端口的进程
+lsof -ti:3000 | xargs kill -9  # 前端
+lsof -ti:3001 | xargs kill -9  # 后端
+lsof -ti:8545 | xargs kill -9  # Anvil
+
+# 或使用停止脚本
+./stop-dev.sh
+```
+
+### 数据库连接失败
+
+**问题**: `Error: Can't reach database server`
+
+**解决方案**:
+
+1. 确保 PostgreSQL 已安装并运行
+2. 创建数据库: `createdb trustless_socialfi`
+3. 运行迁移: `cd packages/agent-service && npx prisma migrate dev`
+4. 检查 `.env` 中的 `DATABASE_URL`
+
+### 智能合约部署失败
+
+**问题**: `Error: Failed to get EIP-1559 fees`
+
+**解决方案**:
+
+1. 确保 Anvil 正在运行
+2. 检查 RPC URL: `http://localhost:8545`
+3. 重新部署: `forge script script/DeployUserRegistry.s.sol:DeployUserRegistry --rpc-url http://localhost:8545 --broadcast`
 
 ## 下一步 / Next Steps
 

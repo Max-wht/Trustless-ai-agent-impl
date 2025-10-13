@@ -11,7 +11,6 @@
 3. **提供 Web2 级别的用户体验** - 在去中心化架构下实现低成本（Gas 费 < $0.10）、快速响应（审核 < 30 秒）的社交互动
 
 4. **完成三层技术架构实现** - 交付完整的 MVP 系统，包括：
-
    - Web 客户端前端界面（React + Next.js + viem）
    - 后端服务器（TypeScript/Node.js，用于数据获取、Agent 服务、API 网关）
    - 智能合约层（Foundry + Solidity，部署在 Arbitrum）

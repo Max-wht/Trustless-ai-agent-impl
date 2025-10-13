@@ -54,6 +54,7 @@
 **VRF 回调时间:** 2-3 秒
 
 **加权选择算法:**
+
 - Agent 信誉 90 → 权重 90
 - Agent 信誉 50 → 权重 50
 - 选中概率：90/140 = 64% vs 36%
@@ -63,4 +64,3 @@
 ---
 
 **Story Status**: ✅ Ready for Development
-

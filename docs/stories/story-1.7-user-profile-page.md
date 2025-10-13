@@ -24,7 +24,6 @@
 3. ✅ 调用后端 API `GET /users/:address`，获取用户档案
 
 4. ✅ 使用 shadcn Card 显示用户信息：
-
    - Avatar（Blockies 生成）
    - 用户名
    - 简介

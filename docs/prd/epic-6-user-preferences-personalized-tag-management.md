@@ -23,7 +23,7 @@ so that **用户偏好数据去中心化存储，用户完全控制数据，跨�
        followedUsers: string[];
      };
      privacy: {
-       mode: "public" | "private";
+       mode: 'public' | 'private';
        allowTagGeneration: boolean;
      };
      metadata: {

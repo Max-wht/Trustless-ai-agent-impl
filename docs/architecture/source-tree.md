@@ -715,8 +715,8 @@ docs/
 
 ```yaml
 packages:
-  - "apps/*"
-  - "packages/*"
+  - 'apps/*'
+  - 'packages/*'
 ```
 
 **工作空间好处 / Workspace Benefits:**
@@ -728,11 +728,11 @@ packages:
 ### docker-compose.yml - 本地开发服务
 
 ```yaml
-version: "3.8"
+version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    ports: ["5432:5432"]
+    ports: ['5432:5432']
     environment:
       POSTGRES_DB: trustless_dev
     volumes:
@@ -740,12 +740,12 @@ services:
 
   redis:
     image: redis:7-alpine
-    ports: ["6379:6379"]
+    ports: ['6379:6379']
 
   anvil:
     image: ghcr.io/foundry-rs/foundry:latest
     command: anvil --host 0.0.0.0
-    ports: ["8545:8545"]
+    ports: ['8545:8545']
 ```
 
 **启动命令 / Start Command:**
@@ -849,28 +849,28 @@ K8s 清单:                  kebab-case        (kubernetes/base, overlays)
 ### apps/api/src/index.ts - 后端入口点
 
 ```typescript
-import Fastify from "fastify";
-import { userRoutes } from "./routes/users.routes";
-import { postRoutes } from "./routes/posts.routes";
-import { AgentOrchestrator } from "./services/AgentOrchestrator";
+import Fastify from 'fastify';
+import { userRoutes } from './routes/users.routes';
+import { postRoutes } from './routes/posts.routes';
+import { AgentOrchestrator } from './services/AgentOrchestrator';
 
 const fastify = Fastify({ logger: true });
 
 // 注册插件 / Register plugins
-fastify.register(require("@fastify/cors"));
-fastify.register(require("@fastify/jwt"), { secret: env.JWT_SECRET });
-fastify.register(require("@fastify/rate-limit"));
+fastify.register(require('@fastify/cors'));
+fastify.register(require('@fastify/jwt'), { secret: env.JWT_SECRET });
+fastify.register(require('@fastify/rate-limit'));
 
 // 注册路由 / Register routes
-fastify.register(userRoutes, { prefix: "/v1/users" });
-fastify.register(postRoutes, { prefix: "/v1/posts" });
+fastify.register(userRoutes, { prefix: '/v1/users' });
+fastify.register(postRoutes, { prefix: '/v1/posts' });
 
 // 启动 Agent 编排器 / Start Agent Orchestrator
 const orchestrator = new AgentOrchestrator();
 orchestrator.startEventListener();
 
 // 启动服务器 / Start server
-fastify.listen({ port: 3001, host: "0.0.0.0" });
+fastify.listen({ port: 3001, host: '0.0.0.0' });
 ```
 
 ### apps/web/src/app/providers.tsx - 前端 Providers

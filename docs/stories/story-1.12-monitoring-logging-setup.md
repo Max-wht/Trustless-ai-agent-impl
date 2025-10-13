@@ -22,7 +22,6 @@
 1. ✅ 后端安装 `pino` 和 `pino-pretty`
 
 2. ✅ 在 `src/lib/logger.ts` 配置 Pino：
-
    - 生产环境 JSON 格式
    - 开发环境 Pretty 格式
 
@@ -57,14 +56,11 @@
 **Pino 配置示例:**
 
 ```typescript
-import pino from "pino";
+import pino from 'pino';
 
 export const logger = pino({
-  level: process.env.LOG_LEVEL || "info",
-  transport:
-    process.env.NODE_ENV === "development"
-      ? { target: "pino-pretty" }
-      : undefined,
+  level: process.env.LOG_LEVEL || 'info',
+  transport: process.env.NODE_ENV === 'development' ? { target: 'pino-pretty' } : undefined,
 });
 ```
 

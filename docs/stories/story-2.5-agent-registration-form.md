@@ -50,6 +50,7 @@
 ## Technical Notes
 
 **两步交易流程:**
+
 ```typescript
 // Step 1: Approve
 await writeContract({
@@ -74,4 +75,3 @@ await writeContract({
 ---
 
 **Story Status**: ✅ Ready for Development
-

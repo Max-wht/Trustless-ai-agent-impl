@@ -1,0 +1,260 @@
+[
+  {
+    "type": "function",
+    "name": "getMyProfile",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct UserRegistry.UserProfile",
+        "components": [
+          {
+            "name": "walletAddress",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "username",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "bio",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "registeredAt",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "isRegistered",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getUserProfile",
+    "inputs": [
+      {
+        "name": "_user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct UserRegistry.UserProfile",
+        "components": [
+          {
+            "name": "walletAddress",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "username",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "bio",
+            "type": "string",
+            "internalType": "string"
+          },
+          {
+            "name": "registeredAt",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "isRegistered",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isRegistered",
+    "inputs": [
+      {
+        "name": "_user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "registerUser",
+    "inputs": [
+      {
+        "name": "_username",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "_bio",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "totalUsers",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "updateProfile",
+    "inputs": [
+      {
+        "name": "_username",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "_bio",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "userProfiles",
+    "inputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "walletAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "bio",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "registeredAt",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "isRegistered",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "ProfileUpdated",
+    "inputs": [
+      {
+        "name": "walletAddress",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "bio",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "UserRegistered",
+    "inputs": [
+      {
+        "name": "walletAddress",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "username",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "AlreadyRegistered",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "EmptyUsername",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotRegistered",
+    "inputs": []
+  }
+]

@@ -20,7 +20,6 @@
 1. ✅ 安装依赖：`wagmi`、`viem`、`@rainbow-me/rainbowkit`
 
 2. ✅ 在 `app/providers.tsx` 创建 Wagmi + RainbowKit Providers：
-
    - 配置 Arbitrum Sepolia 链
    - 配置 Alchemy RPC
    - 配置支持的钱包（MetaMask、WalletConnect、Coinbase Wallet）
@@ -32,7 +31,6 @@
 5. ✅ 点击"连接钱包"后，弹出钱包选择界面（RainbowKit Modal）
 
 6. ✅ 选择 MetaMask，触发 MetaMask 弹窗，连接成功后：
-
    - Button 显示钱包地址（缩写格式：0x1234...5678）
    - 点击地址弹出 Account Modal（显示余额、断开连接按钮）
 
@@ -68,4 +66,6 @@ import { darkTheme } from '@rainbow-me/rainbowkit';
 
 ---
 
-**Story Status**: ✅ Ready for Development
+**Story Status**: ✅ Completed & Verified
+
+**验证报告**: [查看详细验证报告](./story-1.5-verification-report.md)

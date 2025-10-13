@@ -60,7 +60,7 @@
 
 ## Technical Notes
 
-**最低质押要求:** 1000 $TRUST (1000 * 10^18 Wei)
+**最低质押要求:** 1000 $TRUST (1000 \* 10^18 Wei)
 
 **依赖 / Dependencies**: Story 2.1 (TrustToken 必须先存在)  
 **阻塞 / Blocks**: Story 2.3, 2.4, 2.5
@@ -68,4 +68,3 @@
 ---
 
 **Story Status**: ✅ Ready for Development
-

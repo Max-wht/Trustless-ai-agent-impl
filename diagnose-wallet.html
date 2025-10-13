@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anvil 钱包连接诊断</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            background: #2563EB;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        .result {
+            background: #f3f4f6;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+        }
+        .error {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+        }
+        h1 {
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Anvil 钱包连接诊断工具</h1>
+    
+    <div>
+        <button onclick="checkWallet()">1. 检查钱包是否可用</button>
+        <button onclick="getCurrentChain()">2. 获取当前网络</button>
+        <button onclick="addAnvilNetwork()">3. 添加 Anvil 网络</button>
+        <button onclick="switchToAnvil()">4. 切换到 Anvil</button>
+        <button onclick="connectWallet()">5. 连接钱包</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        const resultsDiv = document.getElementById('results');
+
+        function addResult(message, isSuccess = true) {
+            const div = document.createElement('div');
+            div.className = `result ${isSuccess ? 'success' : 'error'}`;
+            div.textContent = message;
+            resultsDiv.appendChild(div);
+        }
+
+        async function checkWallet() {
+            resultsDiv.innerHTML = '';
+            
+            if (typeof window.ethereum !== 'undefined') {
+                addResult('✅ 钱包已安装', true);
+                
+                try {
+                    const accounts = await window.ethereum.request({ 
+                        method: 'eth_accounts' 
+                    });
+                    
+                    if (accounts.length > 0) {
+                        addResult(`✅ 已连接账户: ${accounts[0]}`, true);
+                    } else {
+                        addResult('⚠️ 钱包未连接，请先连接钱包', false);
+                    }
+                } catch (error) {
+                    addResult(`❌ 检查账户失败: ${error.message}`, false);
+                }
+            } else {
+                addResult('❌ 未检测到钱包，请安装 MetaMask 或其他 Web3 钱包', false);
+            }
+        }
+
+        async function getCurrentChain() {
+            resultsDiv.innerHTML = '';
+            
+            try {
+                const chainId = await window.ethereum.request({ 
+                    method: 'eth_chainId' 
+                });
+                const chainIdDecimal = parseInt(chainId, 16);
+                
+                addResult(`当前 Chain ID (hex): ${chainId}`, true);
+                addResult(`当前 Chain ID (decimal): ${chainIdDecimal}`, true);
+                
+                if (chainIdDecimal === 31337) {
+                    addResult('✅ 已连接到 Anvil (31337)', true);
+                } else {
+                    addResult(`⚠️ 未连接到 Anvil，当前网络: ${chainIdDecimal}`, false);
+                    addResult('预期 Chain ID: 31337', false);
+                }
+            } catch (error) {
+                addResult(`❌ 获取网络失败: ${error.message}`, false);
+            }
+        }
+
+        async function addAnvilNetwork() {
+            resultsDiv.innerHTML = '';
+            
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [{
+                        chainId: '0x7a69', // 31337 in hex
+                        chainName: 'Anvil',
+                        nativeCurrency: {
+                            name: 'Ether',
+                            symbol: 'ETH',
+                            decimals: 18
+                        },
+                        rpcUrls: ['http://127.0.0.1:8545'],
+                    }]
+                });
+                
+                addResult('✅ Anvil 网络已添加成功！', true);
+                addResult('网络信息:', true);
+                addResult('  Chain ID: 31337 (0x7a69)', true);
+                addResult('  RPC URL: http://127.0.0.1:8545', true);
+            } catch (error) {
+                if (error.code === 4902) {
+                    addResult('ℹ️ 网络已存在', true);
+                } else {
+                    addResult(`❌ 添加网络失败: ${error.message}`, false);
+                }
+            }
+        }
+
+        async function switchToAnvil() {
+            resultsDiv.innerHTML = '';
+            
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x7a69' }], // 31337 in hex
+                });
+                
+                addResult('✅ 已切换到 Anvil 网络！', true);
+                
+                // 验证切换
+                const chainId = await window.ethereum.request({ 
+                    method: 'eth_chainId' 
+                });
+                addResult(`当前 Chain ID: ${parseInt(chainId, 16)}`, true);
+                
+            } catch (error) {
+                if (error.code === 4902) {
+                    addResult('⚠️ Anvil 网络不存在，请先点击 "3. 添加 Anvil 网络"', false);
+                } else if (error.code === 4001) {
+                    addResult('⚠️ 用户拒绝了切换网络请求', false);
+                } else {
+                    addResult(`❌ 切换网络失败: ${error.message}`, false);
+                }
+            }
+        }
+
+        async function connectWallet() {
+            resultsDiv.innerHTML = '';
+            
+            try {
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_requestAccounts' 
+                });
+                
+                addResult('✅ 钱包连接成功！', true);
+                addResult(`账户地址: ${accounts[0]}`, true);
+                
+                // 获取余额
+                const balance = await window.ethereum.request({
+                    method: 'eth_getBalance',
+                    params: [accounts[0], 'latest']
+                });
+                const balanceInEth = parseInt(balance, 16) / 1e18;
+                addResult(`余额: ${balanceInEth.toFixed(4)} ETH`, true);
+                
+                // 获取 Chain ID
+                const chainId = await window.ethereum.request({ 
+                    method: 'eth_chainId' 
+                });
+                addResult(`Chain ID: ${parseInt(chainId, 16)}`, true);
+                
+            } catch (error) {
+                if (error.code === 4001) {
+                    addResult('⚠️ 用户拒绝了连接请求', false);
+                } else {
+                    addResult(`❌ 连接失败: ${error.message}`, false);
+                }
+            }
+        }
+
+        // 页面加载时自动检查
+        window.addEventListener('load', () => {
+            setTimeout(checkWallet, 500);
+        });
+    </script>
+</body>
+</html>
+

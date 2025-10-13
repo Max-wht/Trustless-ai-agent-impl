@@ -48,6 +48,7 @@
 ## Technical Notes
 
 **时间衰减示例:**
+
 - Week 0: 80 分
 - Week 1: 76 分 (×0.95)
 - Week 4: 65.2 分
@@ -58,4 +59,3 @@
 ---
 
 **Story Status**: ✅ Ready for Development
-

@@ -36,7 +36,6 @@
 5. ✅ 配置 CORS（允许 `http://localhost:3000` 前端访问）
 
 6. ✅ 配置环境变量（`.env`）：
-
    - `PORT=3001`
    - `DATABASE_URL`
    - `NODE_ENV`
@@ -50,7 +49,6 @@
 10. ✅ 实现简单的 `GET /users` 端点，从数据库查询所有用户（使用 Prisma Client）
 
 11. ✅ 配置启动脚本（`package.json`）：
-
     - `dev`（ts-node-dev）
     - `build`（tsc）
     - `start`（node dist）
@@ -76,4 +74,6 @@ docker-compose up -d postgres
 
 ---
 
-**Story Status**: ✅ Ready for Development
+**Story Status**: ✅ Completed & Verified
+
+**验证报告**: [查看详细验证报告](./story-1.3-verification-report.md)

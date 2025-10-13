@@ -49,6 +49,7 @@
 ## Technical Notes
 
 **viem 合约调用示例:**
+
 ```typescript
 const agents = await publicClient.readContract({
   address: CONTRACTS.AgentRegistry.address,
@@ -63,4 +64,3 @@ const agents = await publicClient.readContract({
 ---
 
 **Story Status**: ✅ Ready for Development
-

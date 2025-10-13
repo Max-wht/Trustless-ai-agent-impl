@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加 Anvil 网络到 MetaMask</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #1a202c;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #718096;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status.info {
+            background: #bee3f8;
+            color: #2c5282;
+        }
+
+        .status.success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status.error {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .status.warning {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .network-info {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #1a202c;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .button {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .button.primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .button.primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .button.primary:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .button.secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .button.secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .steps {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .steps h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .step {
+            padding: 12px 0;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .step strong {
+            color: #2d3748;
+        }
+
+        .icon {
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦊 添加 Anvil 网络</h1>
+        <p class="subtitle">一键添加本地开发网络到 MetaMask</p>
+
+        <div id="status" class="status info">
+            <span class="icon">ℹ️</span>
+            <span id="statusText">准备添加网络...</span>
+        </div>
+
+        <div class="network-info">
+            <div class="info-row">
+                <span class="info-label">网络名称</span>
+                <span class="info-value">Anvil Local</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">RPC URL</span>
+                <span class="info-value">http://127.0.0.1:8545</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Chain ID</span>
+                <span class="info-value">31337 (0x7a69)</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">货币符号</span>
+                <span class="info-value">ETH</span>
+            </div>
+        </div>
+
+        <button id="addNetworkBtn" class="button primary" onclick="addNetwork()">
+            <span class="icon">➕</span>
+            添加 Anvil 网络到 MetaMask
+        </button>
+
+        <button class="button secondary" onclick="testConnection()">
+            <span class="icon">🔍</span>
+            测试 Anvil 连接
+        </button>
+
+        <div class="steps">
+            <h3>📋 手动添加步骤</h3>
+            <div class="step">
+                <strong>1.</strong> 打开 MetaMask，点击顶部网络下拉菜单
+            </div>
+            <div class="step">
+                <strong>2.</strong> 点击"添加网络" → "手动添加网络"
+            </div>
+            <div class="step">
+                <strong>3.</strong> 填写上方显示的网络信息
+            </div>
+            <div class="step">
+                <strong>4.</strong> 点击"保存"并切换到 Anvil Local 网络
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📖 详细文档: <a href="./docs/METAMASK-ANVIL-CONNECTION-GUIDE.md" target="_blank">MetaMask 连接指南</a></p>
+            <p style="margin-top: 10px;">🚀 Trustless SocialFi - 本地开发环境</p>
+        </div>
+    </div>
+
+    <script>
+        // 检查 MetaMask 是否安装
+        function checkMetaMask() {
+            if (typeof window.ethereum !== 'undefined') {
+                updateStatus('success', '✅ MetaMask 已安装');
+                return true;
+            } else {
+                updateStatus('error', '❌ 未检测到 MetaMask，请先安装 MetaMask 扩展');
+                document.getElementById('addNetworkBtn').disabled = true;
+                return false;
+            }
+        }
+
+        // 更新状态信息
+        function updateStatus(type, text) {
+            const statusDiv = document.getElementById('status');
+            const statusText = document.getElementById('statusText');
+            statusDiv.className = `status ${type}`;
+            statusText.textContent = text;
+        }
+
+        // 添加网络到 MetaMask
+        async function addNetwork() {
+            if (!checkMetaMask()) return;
+
+            const networkParams = {
+                chainId: '0x7a69', // 31337 的十六进制
+                chainName: 'Anvil Local',
+                nativeCurrency: {
+                    name: 'Ether',
+                    symbol: 'ETH',
+                    decimals: 18
+                },
+                rpcUrls: ['http://127.0.0.1:8545'],
+                blockExplorerUrls: null
+            };
+
+            try {
+                updateStatus('info', '⏳ 正在添加网络，请在 MetaMask 中确认...');
+                
+                await window.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [networkParams]
+                });
+
+                updateStatus('success', '✅ 网络添加成功！MetaMask 已切换到 Anvil Local');
+                
+                // 3秒后提示可以访问应用
+                setTimeout(() => {
+                    updateStatus('success', '✅ 现在可以访问 http://localhost:3000 并连接钱包了');
+                }, 3000);
+
+            } catch (error) {
+                console.error('添加网络失败:', error);
+                
+                if (error.code === 4902) {
+                    updateStatus('error', '❌ 添加网络失败，请手动添加（参考下方步骤）');
+                } else if (error.code === 4001) {
+                    updateStatus('warning', '⚠️ 用户取消了操作');
+                } else if (error.code === -32602) {
+                    updateStatus('error', '❌ 网络参数无效，请检查 Anvil 是否运行');
+                } else {
+                    updateStatus('error', `❌ 添加失败: ${error.message}`);
+                }
+            }
+        }
+
+        // 测试 Anvil 连接
+        async function testConnection() {
+            updateStatus('info', '⏳ 正在测试 Anvil 连接...');
+
+            try {
+                const response = await fetch('http://127.0.0.1:8545', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        jsonrpc: '2.0',
+                        method: 'eth_chainId',
+                        params: [],
+                        id: 1
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('HTTP error: ' + response.status);
+                }
+
+                const data = await response.json();
+                
+                if (data.result === '0x7a69') {
+                    updateStatus('success', '✅ Anvil 运行正常！(Chain ID: 31337)');
+                } else {
+                    updateStatus('warning', `⚠️ 检测到不同的 Chain ID: ${data.result}`);
+                }
+
+            } catch (error) {
+                console.error('连接测试失败:', error);
+                updateStatus('error', '❌ 无法连接到 Anvil。请确保 Anvil 正在运行 (端口 8545)');
+                
+                // 提示如何启动 Anvil
+                setTimeout(() => {
+                    if (confirm('Anvil 似乎没有运行。是否查看启动说明？')) {
+                        alert('在项目根目录运行:\n\n./start-dev.sh\n\n或手动启动:\n\ncd packages/contracts\nanvil');
+                    }
+                }, 1000);
+            }
+        }
+
+        // 页面加载时检查
+        window.addEventListener('load', () => {
+            checkMetaMask();
+            
+            // 自动测试 Anvil 连接
+            setTimeout(testConnection, 500);
+        });
+    </script>
+</body>
+</html>
+

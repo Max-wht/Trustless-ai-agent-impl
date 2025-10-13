@@ -47,18 +47,15 @@
 **Ideas Generated:**
 
 1. **内容审核平衡问题的识别**
-
    - 问题：审核过严 → 诚实内容无法发布
    - 问题：审核过松 → 大规模违规内容泛滥
    - 解决方案：根据用户信誉等级动态调整审核严格度
 
 2. **恶意 Agent 攻击场景**
-
    - 问题：恶意 Agent 节点 > 诚实节点 → 推送垃圾内容
    - 解决方案：基于 ERC-8004 的信誉权重系统 + 用户反馈影响收益
 
 3. **Sybil 攻击防护**
-
    - 问题：成为 Agent 太容易 → 女巫攻击 → 破坏拜占庭容错
    - 解决方案：渐进式权限解锁（新 Agent 初期权重低）
 
@@ -86,19 +83,16 @@
 **Ideas Generated:**
 
 5. **多 Agent 共识审核机制**
-
    - 借鉴 Chainlink 去中心化预言机模式
    - 多个 Agent 独立判断 → 共识决策
    - 类比：MultiSig 需要多方签名才能执行
 
 6. **Agent 通讯隔离设计**
-
    - Agent 之间只能交流判断结果，不能交流判断依据
    - 防止串通和群体思维
    - 类比：陪审团成员独立投票
 
 7. **信誉加权投票机制**
-
    - 历史判断准确率 → 评分 → 投票权重
    - 判断过的内容质量（点赞数）→ 综合评分
    - 类比：资深陪审员的意见权重更大
@@ -128,19 +122,16 @@
 **Ideas Generated:**
 
 9. **防御"慢性毒药攻击"**
-
    - 攻击：Agent 前期表现完美积累高信誉，后期突然作恶
    - 解决方案：时间衰减机制（近期判断权重 >> 历史判断权重）
    - Agent 信誉 = Σ(内容质量 × 时间衰减因子)
 
 10. **防御"刷量攻击"**
-
     - 攻击：创建假账号刷点赞 → 操纵内容质量评估
     - 解决方案 1：用户信誉加权点赞（新用户/低信誉用户点赞权重低）
     - 解决方案 2：时间加权点赞（短期内大量点赞权重降低）
 
 11. **信誉系统活力机制**
-
     - 问题：早期 Agent 垄断高信誉 → 新 Agent 无法竞争
     - 解决方案：当 Agent 总数 > N 时，所有 Agent 评分 ×50%
     - 确保信誉系统的长期活力和公平竞争
@@ -172,24 +163,20 @@
 **Ideas Generated:**
 
 13. **系统本质：诚实节点网络**
-
     - 目标：构建一个全员诚实的网络
     - 恶意成员在进入时就被拒绝（准入门槛 + 经济激励）
 
 14. **治理层：DAO 投票定义合规规则**
-
     - 合规性的最终仲裁者：社区而非中心化团队
     - DAO 投票修改和更新规则
     - 社区自治，适应不同地区和文化
 
 15. **冷启动策略**
-
     - 前 20 个 Agent：初始评分（随时间递减）
     - 前 1000 个用户：初始信誉（随时间递减）
     - 新用户信誉 = f(发布数量, 获赞数, 用户信誉加权)
 
 16. **容错哲学：Trustless > 绝对正确**
-
     - 接受错误，依赖博弈论和经济激励
     - 没有人工兜底，完全信任算法和共识
     - 基于 ERC-8004 Trustless Agent 规范
@@ -220,23 +207,19 @@
 **Ideas Generated:**
 
 18. **2015 视角：系统的不可或缺核心**
-
     - 去掉所有现代技术（L2、先进 AI、ERC-8004）后的本质
     - 核心：诚实节点网络 + 经济激励 + 共识机制
     - 启发：即使技术受限，核心机制仍可运作
 
 19. **2030 视角：防止信誉固化**
-
     - 风险：早期 Agent 垄断高信誉 → 寡头垄断
     - 解决方案：信誉重置机制（Agent 总数 > N 时全体评分 ×50%）
 
 20. **2030 视角：DAO 治理僵化**
-
     - 风险：合规规则长期未更新 → 脱离社会现实
     - 解决方案：紧急提案快速通道（已在第一性原理中确定）
 
 21. **2030 视角：AI 模型过时**
-
     - 风险：新型内容形式（如脑机接口内容）无法被旧 Agent 识别
     - 待解决：Agent 升级机制（可能需要 DAO 批准新模型）
 
@@ -267,13 +250,11 @@
 _Ideas ready to implement now_
 
 1. **多 Agent 共识审核系统（类 Chainlink）**
-
    - Description: 固定 5 个 Agent 随机选择，加权投票，通讯隔离
    - Why immediate: 技术成熟（借鉴 Chainlink），市场已验证
    - Resources needed: ERC-8004 规范理解，智能合约开发，Agent 选择算法
 
 2. **Layer 2 部署 + IPFS 存储**
-
    - Description: 链下 Agent 验证 + zk-proof 上链，内容存 IPFS + 哈希上链
    - Why immediate: 降低 Gas 费是用户体验的第一优先级
    - Resources needed: L2 选型（Arbitrum/Optimism/zkSync），IPFS 集成，zk-proof 库
@@ -288,7 +269,6 @@ _Ideas ready to implement now_
 _Ideas requiring development/research_
 
 4. **个性化推荐系统（专属 Agent）**
-
    - Description: 每个用户绑定一个推荐 Agent，链下学习偏好，链上激励
    - Development needed:
      - Agent 推荐算法训练
@@ -297,7 +277,6 @@ _Ideas requiring development/research_
    - Timeline estimate: 6-9 个月（需要用户数据积累）
 
 5. **原生代币经济模型**
-
    - Description: 用于 Agent 质押、DAO 治理、奖励机制
    - Development needed:
      - 代币经济学设计（供应量、分配、通胀/通缩）
@@ -320,7 +299,6 @@ _Ideas requiring development/research_
 _Ambitious, transformative concepts_
 
 7. **全球抗审查社交基础设施**
-
    - Description: 成为 Web3 时代的"不可关闭"的社交媒体
    - Transformative potential:
      - 保护言论自由和信息流动
@@ -333,7 +311,6 @@ _Ambitious, transformative concepts_
      - 恶意内容和极端主义的平衡
 
 8. **Agent 能力的持续进化**
-
    - Description: Agent 自动升级模型以适应新型内容形式
    - Transformative potential:
      - 从文本/图片/视频扩展到 AR/VR/脑机接口内容
@@ -533,7 +510,6 @@ _Key realizations from the session_
 ### Next Session Planning
 
 - **Suggested topics:**
-
   1. 深入设计个性化推荐系统（专属 Agent 的具体算法和激励）
   2. 代币经济模型的博弈论建模和仿真
   3. 产品 MVP 的功能范围界定和技术栈选型
@@ -604,7 +580,6 @@ _Key realizations from the session_
 #### **模块 5：经济模型（原生代币）**
 
 - **代币用途**：
-
   1. **Agent 质押**：成为 Agent 需要质押代币（防 Sybil 攻击）
   2. **DAO 治理**：代币持有量 = 投票权
   3. **奖励机制**：
@@ -614,7 +589,6 @@ _Key realizations from the session_
   4. **用户功能**：打赏、高级功能解锁
 
 - **惩罚机制**：
-
   - 恶意 Agent 判断错误 → 质押金部分罚没
   - 严重作恶 → 质押金全部罚没 + 永久禁止
 

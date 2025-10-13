@@ -55,6 +55,7 @@
 ## Technical Notes
 
 **双 Pinning 策略:**
+
 - Primary: Pinata (快速，付费可靠)
 - Backup: Web3.Storage (免费，Filecoin 支持)
 - 至少一个成功即返回
@@ -64,4 +65,3 @@
 ---
 
 **Story Status**: ✅ Ready for Development
-

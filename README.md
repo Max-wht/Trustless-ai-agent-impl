@@ -171,6 +171,26 @@ pnpm clean
 - [技术栈详情](docs/architecture/tech-stack.md)
 - [源代码树](docs/architecture/source-tree.md)
 
+## 故障排除 / Troubleshooting
+
+### CORS 跨域问题 ⚠️
+
+如果在开发时遇到 CORS 错误：
+
+```
+Access to fetch at 'http://localhost:3001/...' has been blocked by CORS policy
+```
+
+**快速修复**: [QUICK-FIX-CORS.md](docs/QUICK-FIX-CORS.md) ⚡
+
+**详细指南**: [CORS-TROUBLESHOOTING.md](docs/CORS-TROUBLESHOOTING.md)
+
+**最常见解决方案**:
+
+1. 重启后端服务（Ctrl+C 后重新运行 `pnpm --filter @trustless/agent-service dev`）
+2. 清除浏览器缓存（Ctrl+Shift+R / Cmd+Shift+R）
+3. 使用无痕模式测试
+
 ## 环境变量 / Environment Variables
 
 每个 package 需要各自的环境变量配置：

@@ -46,12 +46,12 @@ it("renders post card with correct data", () => {
 **后端 API 测试 / Backend API Test:**
 
 ```typescript
-it("creates post with valid auth", async () => {
+it('creates post with valid auth', async () => {
   const response = await app.inject({
-    method: "POST",
-    url: "/v1/posts",
+    method: 'POST',
+    url: '/v1/posts',
     headers: { authorization: `Bearer ${token}` },
-    payload: { content: "Test post" },
+    payload: { content: 'Test post' },
   });
   expect(response.statusCode).toBe(201);
 });
@@ -61,9 +61,9 @@ it("creates post with valid auth", async () => {
 
 ```solidity
 function testWeightedConsensus() public {
-    // 设置5个不同信誉的Agent / Setup 5 agents with different reputations
-    // 提交混合判断(3批准,2拒绝) / Submit mixed judgments (3 approve, 2 reject)
-    // 验证加权得分计算 / Verify weighted score calculation
+  // 设置5个不同信誉的Agent / Setup 5 agents with different reputations
+  // 提交混合判断(3批准,2拒绝) / Submit mixed judgments (3 approve, 2 reject)
+  // 验证加权得分计算 / Verify weighted score calculation
 }
 ```
 

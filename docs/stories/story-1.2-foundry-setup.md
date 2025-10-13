@@ -96,18 +96,21 @@ local = "http://localhost:8545"
 #### Task 3: Install OpenZeppelin
 
 - [x] Installed OpenZeppelin Contracts v5.0.0
+
 - [x] Created remappings.txt for import paths
 
 #### Task 4: Create HealthCheck Contract
 
 - [x] Removed default Counter.sol example
 - [x] Created src/HealthCheck.sol with getMessage() and isAlive()
+
 - [x] Contract uses Solidity 0.8.24
 - [x] Properly documented with NatSpec comments
 
 #### Task 5: Create Tests
 
 - [x] Removed default Counter.t.sol
+
 - [x] Created test/HealthCheck.t.sol
 - [x] Tests for getMessage() and isAlive()
 - [x] All tests passing (2/2)
@@ -128,11 +131,13 @@ local = "http://localhost:8545"
 - [x] Started Anvil local testnet
 - [x] Deployed HealthCheck contract successfully
 - [x] Contract deployed at: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+
 - [x] Deployment gas used: 139207
 
 #### Task 9: Update Documentation
 
 - [x] Updated README.md with comprehensive documentation
+
 - [x] Added build, test, and deployment instructions
 - [x] Documented project structure
 
@@ -171,6 +176,7 @@ local = "http://localhost:8545"
 
 - ✅ 2/2 tests passing
 - ✅ test_GetMessage() - verifies correct message return
+
 - ✅ test_IsAlive() - verifies contract functionality
 - ✅ Gas report generated successfully
 
@@ -179,12 +185,14 @@ local = "http://localhost:8545"
 - ✅ Deployment script created and tested
 - ✅ Successfully deployed to local Anvil
 - ✅ Deployment gas: 139207
+
 - ✅ Contract address: 0x5FbDB2315678afecb367f032d93F642f64180aa3
 
 **Documentation**:
 
 - ✅ Comprehensive README.md created
 - ✅ Build, test, and deployment instructions documented
+
 - ✅ Environment variables documented in .env.example
 
 **Gas Metrics**:

@@ -43,9 +43,9 @@ _User-generated content with IPFS storage and moderation status._
 
 ```typescript
 enum ContentStatus {
-  Pending = "Pending", // 审核中 / Under review
-  Approved = "Approved", // 已批准 / Approved
-  Rejected = "Rejected", // 已拒绝 / Rejected
+  Pending = 'Pending', // 审核中 / Under review
+  Approved = 'Approved', // 已批准 / Approved
+  Rejected = 'Rejected', // 已拒绝 / Rejected
 }
 
 interface Post {

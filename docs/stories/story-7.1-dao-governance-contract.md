@@ -41,4 +41,3 @@
 **依赖**: Story 2.1 (TrustToken)
 
 **Story Status**: ✅ Ready
-

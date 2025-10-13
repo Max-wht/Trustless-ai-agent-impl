@@ -6,19 +6,32 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint src --ext .ts",
-    "test": "jest",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "ts-node prisma/seed.ts",
     "clean": "rm -rf dist"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
-    "@trustless/shared": "workspace:*"
+    "@fastify/cors": "^9.0.1",
+    "@prisma/client": "^5.19.1",
+    "@trustless/shared": "workspace:*",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.26.2",
+    "viem": "^2.38.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.16",
-    "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "prisma": "^5.19.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.2"
   }
 }

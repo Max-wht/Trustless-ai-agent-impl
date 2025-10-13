@@ -57,6 +57,8 @@ _Always lowercase wallet addresses before storage/comparison._
 
 ## 代码风格 / Code Style
 
+- **function命名** 使用驼峰命名
+
 - **TypeScript**: Strict 模式，优先类型推断，使用 const assertions
 - **React**: 函数式组件，命名导出，TypeScript props
 - **Solidity**: 遵循风格指南，使用自定义错误（gas 高效）
@@ -65,7 +67,8 @@ _Always lowercase wallet addresses before storage/comparison._
 
 ## Solidity standards
 
-- **String** 使用string类型的时候，使用双引号而不是单引号
+- **String** Use double quotes for string literals [quotes]
 - **pragma** 使用 ^0.8.24
+- **important** 所有的单引号都换成双引号，如果单引号和双引号都可以使用的话。
 
 ---

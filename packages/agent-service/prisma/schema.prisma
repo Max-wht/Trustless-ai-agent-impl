@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User table - stores user profiles and wallet information
+model User {
+  id            String   @id @default(cuid())
+  walletAddress String   @unique
+  username      String?
+  bio           String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  posts         Post[]
+  likes         Like[]
+  comments      Comment[]
+  following     Follow[] @relation("UserFollowing")
+  followers     Follow[] @relation("UserFollowers")
+
+  @@index([walletAddress], name: "idx_users_wallet_address")
+  @@map("users")
+}
+
+// Post table - stores content metadata
+model Post {
+  id          String   @id @default(cuid())
+  userId      String
+  content     String
+  ipfsHash    String?
+  status      String   @default("pending") // pending, approved, rejected
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes       Like[]
+  comments    Comment[]
+
+  @@index([userId, createdAt], name: "idx_posts_user_created")
+  @@index([status, createdAt], name: "idx_posts_status_created_at")
+  @@map("posts")
+}
+
+// Like table - stores user likes on posts
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId], name: "unique_user_post_like")
+  @@index([postId], name: "idx_likes_post")
+  @@index([userId], name: "idx_likes_user")
+  @@map("likes")
+}
+
+// Comment table - stores comments on posts
+model Comment {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId, createdAt], name: "idx_comments_post_created")
+  @@index([userId], name: "idx_comments_user")
+  @@map("comments")
+}
+
+// Follow table - stores follow relationships between users
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  // Relations
+  follower    User     @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId], name: "unique_follower_following")
+  @@index([followerId], name: "idx_follows_follower")
+  @@index([followingId], name: "idx_follows_following")
+  @@map("follows")
+}
+
