@@ -171,12 +171,18 @@ jobs:
 ### Change Log
 
 - 2025-10-13: 实施 Story 1.11 - CI/CD 基础配置（GitHub Actions）完成
-- 2025-10-13: 修复 CI 工作流错误：
+- 2025-10-13: 修复 CI 工作流错误（第一轮）：
   - 在 build job 中添加 Foundry 安装步骤
   - 确保 build job 先构建 shared 包
   - 移除 TURBO_FORCE 环境变量（导致 contracts 包被跳过）
   - 优化 typecheck job 执行顺序
   - 创建 CICD-DEPLOYMENT-STRATEGY.md 文档
+- 2025-10-13: 修复 Git Submodules 配置错误（第二轮）：
+  - 修正 .gitmodules 中的 submodule 路径
+  - 移除 packages/contracts/.git（独立仓库问题）
+  - 移除 packages/contracts/.gitmodules
+  - 重新初始化 submodules 到正确位置
+  - 创建 SUBMODULE-FIX.md 文档
 
 ### 修复详情 (2025-10-13)
 
@@ -225,6 +231,33 @@ jobs:
 - ✅ 浏览器通过 MetaMask 连接到相应的区块链网络
 - ✅ Git submodules (`forge-std`, `openzeppelin-contracts`) 对 Foundry 至关重要
 
+### 修复详情 - Git Submodules (2025-10-13)
+
+**问题根源**:
+
+1. ❌ `.gitmodules` 路径错误：`lib/forge-std` 而不是 `packages/contracts/lib/forge-std`
+2. ❌ `packages/contracts` 被初始化为独立的 Git 仓库（有自己的 `.git` 目录）
+3. ❌ Submodules 在子仓库中注册，根仓库无法访问
+4. ❌ GitHub Actions checkout 无法找到 submodules
+
+**解决方案**:
+
+1. ✅ 更新 `.gitmodules` 为正确路径
+2. ✅ 删除 `packages/contracts/.git` 和 `.gitmodules`
+3. ✅ 重新注册 submodules 到根仓库
+4. ✅ 运行 `git submodule update --init --recursive`
+
+**验证结果**:
+
+- ✅ `git submodule status` 显示两个 submodules
+- ✅ 本地 `forge build` 成功
+- ✅ Submodules 现在在根目录正确管理
+- ⏳ 等待 GitHub Actions CI 验证
+
+**相关文档**:
+
+- `docs/SUBMODULE-FIX.md` - 详细的修复记录和技术说明
+
 ---
 
-**Story Status**: ✅ Completed with Fixes
+**Story Status**: ✅ Completed with Full Fixes
