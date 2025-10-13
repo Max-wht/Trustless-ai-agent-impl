@@ -138,6 +138,10 @@ jobs:
         working-directory: packages/agent-service
         run: npx prisma generate
 
+      - name: Build agent-service (needed for typecheck)
+        working-directory: packages/agent-service
+        run: pnpm build
+
       - name: Type check shared
         working-directory: packages/shared
         run: npx tsc --noEmit
