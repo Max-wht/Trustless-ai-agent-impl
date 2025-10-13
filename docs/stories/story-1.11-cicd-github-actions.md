@@ -171,7 +171,60 @@ jobs:
 ### Change Log
 
 - 2025-10-13: 实施 Story 1.11 - CI/CD 基础配置（GitHub Actions）完成
+- 2025-10-13: 修复 CI 工作流错误：
+  - 在 build job 中添加 Foundry 安装步骤
+  - 确保 build job 先构建 shared 包
+  - 移除 TURBO_FORCE 环境变量（导致 contracts 包被跳过）
+  - 优化 typecheck job 执行顺序
+  - 创建 CICD-DEPLOYMENT-STRATEGY.md 文档
+
+### 修复详情 (2025-10-13)
+
+**问题**:
+
+1. ❌ `forge build` 失败 - Git submodules 未初始化（已在 checkout 中配置 `submodules: recursive`）
+2. ❌ `pnpm build` 失败 - Build job 缺少 Foundry 安装
+3. ❌ TypeScript 错误 - 缺少依赖包构建
+
+**解决方案**:
+
+1. **Build Job 修复**:
+
+   ```yaml
+   - name: Install Foundry
+     uses: foundry-rs/foundry-toolchain@v1
+     with:
+       version: nightly
+
+   - name: Build shared package first
+     working-directory: packages/shared
+     run: pnpm build
+   # 移除 TURBO_FORCE 环境变量
+   ```
+
+2. **Typecheck Job 优化**:
+
+   ```yaml
+   # 分步执行，更清晰的错误信息
+   - name: Type check shared
+   - name: Type check agent-service
+   - name: Type check web-app
+   ```
+
+3. **文档新增**:
+   - `docs/CICD-DEPLOYMENT-STRATEGY.md` - CI/CD 和区块链部署完整策略
+
+**关键知识点**:
+
+- ✅ CI/CD **不部署**智能合约 - 只验证代码质量
+- ✅ 智能合约需要**手动部署**到测试网/主网
+- ✅ 不同环境使用不同区块链：
+  - Local: Anvil (localhost:8545)
+  - Staging: 测试网 (如 Arbitrum Sepolia)
+  - Production: 主网 (Arbitrum)
+- ✅ 浏览器通过 MetaMask 连接到相应的区块链网络
+- ✅ Git submodules (`forge-std`, `openzeppelin-contracts`) 对 Foundry 至关重要
 
 ---
 
-**Story Status**: ✅ Ready for Review
+**Story Status**: ✅ Completed with Fixes
